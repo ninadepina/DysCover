@@ -1,10 +1,25 @@
-const sliders = document.querySelectorAll('input[type="range"]');
+document.addEventListener('DOMContentLoaded', () => {
+	const zoomSlider = document.querySelector('#slider-zoom');
+	const zoomValueDisplay = zoomSlider.nextElementSibling.querySelector('span');
 
-sliders.forEach((slider) => {
-	const valueDisplay = slider.nextElementSibling.querySelector('span');
-	valueDisplay.textContent = slider.value;
+	const updateZoom = async () => {
+		const zoomLevel = zoomSlider.value;
+		zoomValueDisplay.textContent = zoomLevel;
 
-	slider.addEventListener('input', () => {
-		valueDisplay.textContent = slider.value;
-	});
+		const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+		const tabId = tab.id;
+
+		// Check if the URL is not restricted
+		if (!url.startsWith('chrome://') && !url.startsWith('chrome-extension://')) {
+			chrome.scripting.executeScript({
+				target: { tabId },
+				func: (zoom) => {
+					document.body.style.zoom = zoom / 100;
+				},
+				args: [parseInt(zoomLevel, 10)]
+			});
+		}
+	};
+
+	zoomSlider.addEventListener('input', updateZoom);
 });
