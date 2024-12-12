@@ -41,6 +41,32 @@ document.addEventListener('DOMContentLoaded', () => {
 		}, parseInt(lineHeight, 10));
 	};
 
+	// letter spacing slider
+
+	// contrast slider
+	const contrastSlider = document.querySelector('#slider-contrast');
+	const contrastValueDisplay = contrastSlider.nextElementSibling.querySelector('span');
+
+	const updateContrast = async () => {
+		const contrast = contrastSlider.value;
+		contrastValueDisplay.textContent = contrast;
+		await executeScriptOnActiveTab((contrastLevel) => {
+			document.body.style.filter = `contrast(${contrastLevel}%)`;
+		}, parseInt(contrast, 10));
+	};
+
+	// saturation slider
+	const saturationSlider = document.querySelector('#slider-saturation');
+	const saturationValueDisplay = saturationSlider.nextElementSibling.querySelector('span');
+
+	const updateSaturation = async () => {
+		const saturationValue = saturationSlider.value;
+		saturationValueDisplay.textContent = saturationValue;
+		await executeScriptOnActiveTab((saturation) => {
+			document.body.style.filter = `saturate(${saturation}%)`;
+		}, parseInt(saturationValue, 10));
+	};
+
 	// execute script on active tab
 	const executeScriptOnActiveTab = async (func, arg) => {
 		const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -59,4 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	zoomSlider.addEventListener('input', updateZoom);
 	fontSizeSlider.addEventListener('input', updateFontSize);
 	lineHeightSlider.addEventListener('input', updateLineHeight);
+	contrastSlider.addEventListener('input', updateContrast);
+	saturationSlider.addEventListener('input', updateSaturation);
 });
