@@ -26,6 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
 		}, parseInt(fontSize, 10));
 	};
 
+	// line height slider
+	const lineHeightSlider = document.querySelector('#slider-line');
+	const lineHeightValueDisplay = lineHeightSlider.nextElementSibling.querySelector('span');
+
+	const updateLineHeight = async () => {
+		const lineHeight = lineHeightSlider.value;
+		lineHeightValueDisplay.textContent = lineHeight;
+		await executeScriptOnActiveTab((height) => {
+			const elements = document.querySelectorAll('*');
+			elements.forEach((el) => {
+				el.style.lineHeight = height + '%';
+			});
+		}, parseInt(lineHeight, 10));
+	};
+
 	// execute script on active tab
 	const executeScriptOnActiveTab = async (func, arg) => {
 		const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -43,4 +58,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	zoomSlider.addEventListener('input', updateZoom);
 	fontSizeSlider.addEventListener('input', updateFontSize);
+	lineHeightSlider.addEventListener('input', updateLineHeight);
 });
