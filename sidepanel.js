@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	// zoom slider
 	const zoomSlider = document.querySelector('#slider-zoom');
 	const zoomValueDisplay = zoomSlider.nextElementSibling.querySelector('span');
-	
+
 	const updateZoom = async () => {
 		const zoomLevel = zoomSlider.value;
 		zoomValueDisplay.textContent = zoomLevel;
@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		const fontSize = fontSizeSlider.value;
 		fontSizeValueDisplay.textContent = fontSize;
 		await executeScriptOnActiveTab((size) => {
-			document.body.style.fontSize = size + '%';
+			const elements = document.querySelectorAll('*');
+			elements.forEach((el) => {
+				el.style.fontSize = size + '%';
+			});
 		}, parseInt(fontSize, 10));
 	};
 
