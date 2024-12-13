@@ -5,9 +5,10 @@ const sliders = [
 	{ id: '#slider-contrast', styleProp: 'filter', unit: '%', prefix: 'contrast(', suffix: ')' },
 	{ id: '#slider-saturation', styleProp: 'filter', unit: '%', prefix: 'saturate(', suffix: ')' }
 ];
+const textToSpeechButton = { id: '#speakButton', alert: 'Please select some text to speak!' };
 
 document.addEventListener('DOMContentLoaded', () => {
-	const updateStyle = async (slider, styleProp, unit, factor, prefix = '', suffix = '') => {
+	const updateStyle = async (slider, styleProp, unit, prefix = '', suffix = '') => {
 		const value = slider.value;
 		slider.nextElementSibling.querySelector('span').textContent = value;
 		await executeScriptOnActiveTab(
@@ -40,12 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		slider.addEventListener('input', () => updateStyle(slider, styleProp, unit, factor, prefix, suffix));
 	});
 
-	document.querySelector('#speakButton').addEventListener('click', async () => {
+	document.querySelector(textToSpeechButton.id).addEventListener('click', async () => {
 		await executeScriptOnActiveTab(() => {
 			const selectedText = window.getSelection().toString();
 			selectedText
 				? speechSynthesis.speak(new SpeechSynthesisUtterance(selectedText))
-				: alert('Please select some text to speak!');
+				: alert(textToSpeechButton.alert);
 		});
 	});
 
