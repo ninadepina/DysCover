@@ -70,7 +70,7 @@ h2.options-title {
 
 .slider {
 	display: grid;
-	grid-template-columns: 1fr 7.5fr 1fr;
+	grid-template-columns: 2fr 4fr 1fr;
 	gap: 1rem;
 	align-items: center;
 	width: 100%;
