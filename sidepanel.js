@@ -1,74 +1,55 @@
+const sliders = [
+	{ id: '#slider-zoom', styleProp: 'zoom', unit: '', factor: 100 },
+	{ id: '#slider-size', styleProp: 'fontSize', unit: '%', factor: 1 },
+	{ id: '#slider-line', styleProp: 'lineHeight', unit: '%', factor: 1 },
+	{ id: '#slider-contrast', styleProp: 'filter', unit: '%', prefix: 'contrast(', suffix: ')' },
+	{ id: '#slider-saturation', styleProp: 'filter', unit: '%', prefix: 'saturate(', suffix: ')' }
+];
+
 document.addEventListener('DOMContentLoaded', () => {
-	// zoom slider
-	const zoomSlider = document.querySelector('#slider-zoom');
-	const zoomValueDisplay = zoomSlider.nextElementSibling.querySelector('span');
-
-	const updateZoom = async () => {
-		const zoomLevel = zoomSlider.value;
-		zoomValueDisplay.textContent = zoomLevel;
-		await executeScriptOnActiveTab((zoom) => {
-			document.body.style.zoom = zoom / 100;
-		}, parseInt(zoomLevel, 10));
+	const updateStyle = async (slider, styleProp, unit, factor, prefix = '', suffix = '') => {
+		const value = slider.value;
+		slider.nextElementSibling.querySelector('span').textContent = value;
+		await executeScriptOnActiveTab(
+			(prop, val, unit, prefix, suffix) => {
+				switch (prop) {
+					case 'zoom':
+						document.body.style.zoom = val / 100;
+						break;
+					case 'filter':
+						document.body.style.filter = `${prefix}${val}${unit}${suffix}`;
+						break;
+					default:
+						const elements = document.querySelectorAll('*');
+						elements.forEach((el) => {
+							el.style[prop] = val + unit;
+						});
+						break;
+				}
+			},
+			styleProp,
+			parseInt(value, 10),
+			unit,
+			prefix,
+			suffix
+		);
 	};
 
-	// font size slider
-	const fontSizeSlider = document.querySelector('#slider-size');
-	const fontSizeValueDisplay = fontSizeSlider.nextElementSibling.querySelector('span');
+	sliders.forEach(({ id, styleProp, unit, factor, prefix, suffix }) => {
+		const slider = document.querySelector(id);
+		slider.addEventListener('input', () => updateStyle(slider, styleProp, unit, factor, prefix, suffix));
+	});
 
-	const updateFontSize = async () => {
-		const fontSize = fontSizeSlider.value;
-		fontSizeValueDisplay.textContent = fontSize;
-		await executeScriptOnActiveTab((size) => {
-			const elements = document.querySelectorAll('*');
-			elements.forEach((el) => {
-				el.style.fontSize = size + '%';
-			});
-		}, parseInt(fontSize, 10));
-	};
+	document.querySelector('#speakButton').addEventListener('click', async () => {
+		await executeScriptOnActiveTab(() => {
+			const selectedText = window.getSelection().toString();
+			selectedText
+				? speechSynthesis.speak(new SpeechSynthesisUtterance(selectedText))
+				: alert('Please select some text to speak!');
+		});
+	});
 
-	// line height slider
-	const lineHeightSlider = document.querySelector('#slider-line');
-	const lineHeightValueDisplay = lineHeightSlider.nextElementSibling.querySelector('span');
-
-	const updateLineHeight = async () => {
-		const lineHeight = lineHeightSlider.value;
-		lineHeightValueDisplay.textContent = lineHeight;
-		await executeScriptOnActiveTab((height) => {
-			const elements = document.querySelectorAll('*');
-			elements.forEach((el) => {
-				el.style.lineHeight = height + '%';
-			});
-		}, parseInt(lineHeight, 10));
-	};
-
-	// letter spacing slider
-
-	// contrast slider
-	const contrastSlider = document.querySelector('#slider-contrast');
-	const contrastValueDisplay = contrastSlider.nextElementSibling.querySelector('span');
-
-	const updateContrast = async () => {
-		const contrast = contrastSlider.value;
-		contrastValueDisplay.textContent = contrast;
-		await executeScriptOnActiveTab((contrastLevel) => {
-			document.body.style.filter = `contrast(${contrastLevel}%)`;
-		}, parseInt(contrast, 10));
-	};
-
-	// saturation slider
-	const saturationSlider = document.querySelector('#slider-saturation');
-	const saturationValueDisplay = saturationSlider.nextElementSibling.querySelector('span');
-
-	const updateSaturation = async () => {
-		const saturationValue = saturationSlider.value;
-		saturationValueDisplay.textContent = saturationValue;
-		await executeScriptOnActiveTab((saturation) => {
-			document.body.style.filter = `saturate(${saturation}%)`;
-		}, parseInt(saturationValue, 10));
-	};
-
-	// execute script on active tab
-	const executeScriptOnActiveTab = async (func, arg) => {
+	const executeScriptOnActiveTab = async (func, ...args) => {
 		const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 		const tabId = tab.id;
 		const url = tab.url;
@@ -77,14 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			chrome.scripting.executeScript({
 				target: { tabId },
 				func,
-				args: [arg]
+				args
 			});
 		}
 	};
-
-	zoomSlider.addEventListener('input', updateZoom);
-	fontSizeSlider.addEventListener('input', updateFontSize);
-	lineHeightSlider.addEventListener('input', updateLineHeight);
-	contrastSlider.addEventListener('input', updateContrast);
-	saturationSlider.addEventListener('input', updateSaturation);
 });
