@@ -45,14 +45,21 @@ body {
 }
 button {
 	width: 100%;
-	padding: 0.5rem;
 	font-family: inherit;
 	font-size: inherit;
 	font-weight: inherit;
 	color: inherit;
-	background-color: var(--secondary-color);
+	background-color: transparent;
 	border: none;
 	cursor: pointer;
+}
+button#speakButton {
+	padding: 0.5rem;
+	background-color: var(--secondary-color);
+}
+
+.hr {
+	border-top: 1px solid var(--primary-color);
 }
 
 h1,
@@ -64,7 +71,8 @@ span {
 	line-height: normal;
 }
 
-h2.options-title {
+h2.options-title,
+h2.settings-title {
 	font-size: 1rem;
 	padding: 0.625rem 0.875rem;
 	text-transform: uppercase;
@@ -77,10 +85,22 @@ section.extension {
 	padding-block: 1.5rem;
 }
 
-.options-content {
+.options-content,
+.settings-content {
 	display: flex;
 	flex-direction: column;
 	background-color: var(--tertiary-color);
+}
+
+.setting {
+	display: flex;
+	justify-content: space-between;
+	padding: 0.875rem;
+}
+
+.setting-options {
+	display: flex;
+	gap: 1rem;
 }
 
 .slider {
@@ -91,7 +111,8 @@ section.extension {
 	width: 100%;
 	padding: 0.875rem;
 }
-.slider + .slider {
+.slider + .slider,
+.setting + .setting {
 	border-top: 1px solid var(--secondary-color);
 }
 
@@ -104,6 +125,7 @@ section.extension {
 	text-align: right;
 }
 
+/* slider */
 input[type='range'][name^='slider-'] {
 	-webkit-appearance: none;
 	appearance: none;
@@ -132,4 +154,54 @@ input[type='range'][name^='slider-']::-moz-range-thumb {
 	border-radius: 50%;
 	background-color: var(--primary-color);
 	cursor: pointer;
+}
+
+/* tooltip */
+.tooltip {
+	position: relative;
+	display: inline-block;
+}
+
+.tooltip-text {
+	visibility: hidden;
+	position: absolute;
+	bottom: 150%;
+	left: 50%;
+	transform: translateX(-50%);
+	width: fit-content;
+	padding: 5px;
+	font-size: 0.75rem;
+	text-align: center;
+	white-space: nowrap;
+	color: var(--secondary-color);
+	background-color: var(--primary-color);
+	border-radius: 6px;
+	z-index: 1;
+}
+
+.tooltip-text::after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	border-width: 5px;
+	border-style: solid;
+	border-color: var(--primary-color) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip-text {
+	visibility: visible;
+}
+
+.tooltip--right .tooltip-text,
+.tooltip--right .tooltip-text::after {
+	left: initial;
+	transform: unset;
+}
+.tooltip--right .tooltip-text {
+	right: 0;
+}
+.tooltip--right .tooltip-text::after {
+	right: 10%;
 }
