@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const value = slider.value;
 		slider.nextElementSibling.querySelector('span').textContent = value;
 		await executeScriptOnActiveTab(
-			(prop, val, unit, prefix, suffix) => {
+			(prop, val, unit) => {
 				prop === 'zoom'
 					? (document.body.style.zoom = val / 100)
 					: document.querySelectorAll('*').forEach((el) => (el.style[prop] = val + unit));
@@ -34,13 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		await executeScriptOnActiveTab((filterString) => (document.body.style.filter = filterString), filterString);
 	};
 
-	sliders.forEach(({ id, styleProp, unit, factor, prefix, suffix }) => {
+	sliders.forEach(({ id, styleProp, unit, prefix, suffix }) => {
 		const slider = document.querySelector(id);
 		slider.addEventListener('input', () => {
-			if (styleProp === 'filter') {
-				updateFilter(prefix.replace('(', ''), slider.value);
-			}
-			updateStyle(slider, styleProp, unit, factor, prefix, suffix);
+			if (styleProp === 'filter') updateFilter(prefix.replace('(', ''), slider.value);
+			updateStyle(slider, styleProp, unit, prefix, suffix);
 		});
 	});
 
@@ -61,15 +59,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	document.querySelector('#global--apply').addEventListener('click', () => {
 		const settings = JSON.parse(localStorage.getItem('globalSettings'));
-		if (settings) {
-			settings.forEach(({ id, value }) => {
-				const slider = document.querySelector(id);
-				slider.value = value;
-				slider.dispatchEvent(new Event('input'));
-			});
-		} else {
+		if (!settings) {
 			alert('No settings found!');
+			return;
 		}
+
+		settings.forEach(({ id, value }) => {
+			const slider = document.querySelector(id);
+			slider.value = value;
+			slider.dispatchEvent(new Event('input'));
+		});
 	});
 
 	const executeScriptOnActiveTab = async (func, ...args) => {
