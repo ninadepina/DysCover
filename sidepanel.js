@@ -6,6 +6,7 @@ const sliders = [
 	{ id: '#slider-saturation', styleProp: 'filter', unit: '%', prefix: 'saturate(', suffix: ')' }
 ];
 const textToSpeechButton = { id: '#speakButton', alert: 'Please select some text to speak!' };
+const filters = { contrast: '100%', saturate: '100%' };
 
 document.addEventListener('DOMContentLoaded', () => {
 	const updateStyle = async (slider, styleProp, unit, prefix = '', suffix = '') => {
@@ -13,20 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		slider.nextElementSibling.querySelector('span').textContent = value;
 		await executeScriptOnActiveTab(
 			(prop, val, unit, prefix, suffix) => {
-				switch (prop) {
-					case 'zoom':
-						document.body.style.zoom = val / 100;
-						break;
-					case 'filter':
-						document.body.style.filter = `${prefix}${val}${unit}${suffix}`;
-						break;
-					default:
-						const elements = document.querySelectorAll('*');
-						elements.forEach((el) => {
-							el.style[prop] = val + unit;
-						});
-						break;
-				}
+				prop === 'zoom'
+					? (document.body.style.zoom = val / 100)
+					: document.querySelectorAll('*').forEach((el) => (el.style[prop] = val + unit));
 			},
 			styleProp,
 			parseInt(value, 10),
@@ -36,9 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
 		);
 	};
 
+	const updateFilter = async (type, value) => {
+		filters[type] = `${value}%`;
+		const filterString = Object.entries(filters)
+			.map(([key, val]) => `${key}(${val})`)
+			.join(' ');
+		await executeScriptOnActiveTab((filterString) => (document.body.style.filter = filterString), filterString);
+	};
+
 	sliders.forEach(({ id, styleProp, unit, factor, prefix, suffix }) => {
 		const slider = document.querySelector(id);
-		slider.addEventListener('input', () => updateStyle(slider, styleProp, unit, factor, prefix, suffix));
+		slider.addEventListener('input', () => {
+			if (styleProp === 'filter') {
+				updateFilter(prefix.replace('(', ''), slider.value);
+			}
+			updateStyle(slider, styleProp, unit, factor, prefix, suffix);
+		});
 	});
 
 	document.querySelector(textToSpeechButton.id).addEventListener('click', async () => {
@@ -50,17 +53,31 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
+	document.querySelector('#global--update').addEventListener('click', () => {
+		const settings = sliders.map(({ id }) => ({ id, value: document.querySelector(id).value }));
+		localStorage.setItem('globalSettings', JSON.stringify(settings));
+		alert('Settings saved!');
+	});
+
+	document.querySelector('#global--apply').addEventListener('click', () => {
+		const settings = JSON.parse(localStorage.getItem('globalSettings'));
+		if (settings) {
+			settings.forEach(({ id, value }) => {
+				const slider = document.querySelector(id);
+				slider.value = value;
+				slider.dispatchEvent(new Event('input'));
+			});
+		} else {
+			alert('No settings found!');
+		}
+	});
+
 	const executeScriptOnActiveTab = async (func, ...args) => {
 		const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-		const tabId = tab.id;
-		const url = tab.url;
+		const { id: tabId, url } = tab;
 
 		if (!url.startsWith('chrome://') && !url.startsWith('chrome-extension://')) {
-			chrome.scripting.executeScript({
-				target: { tabId },
-				func,
-				args
-			});
+			chrome.scripting.executeScript({ target: { tabId }, func, args });
 		}
 	};
 });
