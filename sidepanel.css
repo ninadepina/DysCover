@@ -29,6 +29,8 @@
 	--tertiary-color: #e4e6eb;
 	--slider-size: 6px;
 	--slider-thumb-size: 14px;
+	--border-radius: 5px;
+	--border-radius-full: 50%;
 }
 
 html,
@@ -131,7 +133,7 @@ input[type='range'][name^='slider-'] {
 	appearance: none;
 	width: 100%;
 	height: var(--slider-size);
-	border-radius: 5px;
+	border-radius: var(--border-radius);
 	background: var(--secondary-color);
 	outline: none;
 	-webkit-transition: 0.2s;
@@ -143,7 +145,7 @@ input[type='range'][name^='slider-']::-webkit-slider-thumb {
 	appearance: none;
 	width: var(--slider-thumb-size);
 	height: var(--slider-thumb-size);
-	border-radius: 50%;
+	border-radius: var(--border-radius-full);
 	background-color: var(--primary-color);
 	cursor: pointer;
 }
@@ -151,7 +153,7 @@ input[type='range'][name^='slider-']::-webkit-slider-thumb {
 input[type='range'][name^='slider-']::-moz-range-thumb {
 	width: var(--slider-thumb-size);
 	height: var(--slider-thumb-size);
-	border-radius: 50%;
+	border-radius: var(--border-radius-full);
 	background-color: var(--primary-color);
 	cursor: pointer;
 }
@@ -175,7 +177,7 @@ input[type='range'][name^='slider-']::-moz-range-thumb {
 	white-space: nowrap;
 	color: var(--secondary-color);
 	background-color: var(--primary-color);
-	border-radius: 6px;
+	border-radius: var(--border-radius);
 	z-index: 1;
 }
 
