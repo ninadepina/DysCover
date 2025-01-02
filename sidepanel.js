@@ -42,6 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
+	const colorPicker = document.querySelector('input[name="font-color"]');
+	const colorPickerText = document.querySelector('input[name="font-color"] + span');
+
+	colorPickerText.textContent = colorPicker.value;
+	colorPicker.addEventListener('input', () => {
+		colorPickerText.textContent = colorPicker.value;
+
+		executeScriptOnActiveTab((color) => {
+			document.body.style.color = color;
+		}, colorPicker.value);
+	});
+
 	const invertCheckbox = document.querySelector('input[name="invert"]');
 	const monochromeCheckbox = document.querySelector('input[name="monochrome"]');
 	const activeFilters = { invert: false, monochrome: false };
