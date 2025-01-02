@@ -42,6 +42,31 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
+	const invertCheckbox = document.querySelector('input[name="invert"]');
+	const monochromeCheckbox = document.querySelector('input[name="monochrome"]');
+	const activeFilters = { invert: false, monochrome: false };
+
+	const updateFilters = async () => {
+		const filters = [];
+		if (activeFilters.invert) filters.push('invert(100%)');
+		if (activeFilters.monochrome) filters.push('grayscale(100%)');
+
+		const filterString = filters.join(' ');
+		await executeScriptOnActiveTab((filter) => {
+			document.body.style.filter = filter;
+		}, filterString);
+	};
+
+	invertCheckbox.addEventListener('change', async () => {
+		activeFilters.invert = invertCheckbox.checked;
+		await updateFilters();
+	});
+
+	monochromeCheckbox.addEventListener('change', async () => {
+		activeFilters.monochrome = monochromeCheckbox.checked;
+		await updateFilters();
+	});
+
 	document.querySelector(textToSpeechButton.id).addEventListener('click', async () => {
 		await executeScriptOnActiveTab(() => {
 			const selectedText = window.getSelection().toString();
