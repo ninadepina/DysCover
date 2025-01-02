@@ -108,12 +108,14 @@ section.extension {
 	gap: 1rem;
 }
 
-.checkbox-group {
+.checkbox-group,
+.dropdown-group {
 	display: flex;
 	align-items: center;
 }
 
-.checkbox {
+.checkbox,
+.dropdown {
 	flex: 1;
 	display: flex;
 	justify-content: center;
@@ -131,15 +133,18 @@ section.extension {
 }
 
 .checkbox-group + .slider,
+.dropdown-group + .slider,
 .slider + .slider,
 .setting + .setting {
 	border-top: 1px solid var(--secondary-color);
 }
-.checkbox + .checkbox {
+.checkbox + .checkbox,
+.dropdown + .dropdown {
 	border-left: 1px solid var(--secondary-color);
 }
 
 .checkbox-title,
+.dropdown-title,
 .slider-title {
 	white-space: nowrap;
 }
@@ -150,7 +155,8 @@ section.extension {
 }
 
 /* checkbox */
-input[type='checkbox'] {
+input[type='checkbox'],
+input[type='radio'] {
 	display: none;
 }
 
@@ -165,6 +171,63 @@ label.checkbox:hover {
 label.checkbox:has(:checked) {
 	color: var(--secondary-color);
 	background-color: var(--primary-color);
+}
+
+/* dropdown */
+.dropdown {
+	position: relative;
+}
+
+.dropdown-content {
+	opacity: 0;
+	visibility: hidden;
+	display: none;
+	position: absolute;
+	top: 100%;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.dropdown-content:hover,
+.dropdown-content:focus-within,
+.dropdown:hover .dropdown-content {
+	opacity: 1;
+	visibility: visible;
+	display: flex;
+}
+
+.dropdown-item {
+	padding: 0.5rem;
+	background-color: var(--secondary-color);
+	transition: 0.2s ease-in-out;
+	transition-property: background-color, color;
+	cursor: pointer;
+}
+.dropdown-item:hover {
+	background-color: var(--tertiary-color);
+}
+.dropdown-item:has(:checked) {
+	color: var(--secondary-color);
+	background-color: var(--primary-color);
+}
+.dropdown-item + .dropdown-item {
+	border-top: 1px solid var(--primary-color);
+}
+
+.color-picker {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	width: 100%;
+	padding: 0.25rem;
+	background-color: var(--secondary-color);
+	cursor: pointer;
+}
+
+input[type='color'] {
+	background: none;
+	border: none;
+	cursor: pointer;
 }
 
 /* slider */
