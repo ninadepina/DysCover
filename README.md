@@ -11,7 +11,7 @@
 -   HTML5
 -   CSS3
 -   JavaScript
--   chrome.sidePanel [chrome.sidePanel docs](https://developer.chrome.com/docs/extensions/reference/api/sidePanel)
+-   [chrome.sidePanel](https://developer.chrome.com/docs/extensions/reference/api/sidePanel)
 
 ---
 
@@ -25,9 +25,9 @@ $ git clone https://github.com/ninadepina/DysCover.git
 
 2. Add as a Google Chrome extension
 
--   Go to [chrome://extensions/](chrome://extensions/) in your Google Chrome browser
--   Toggle the 'Developer mode' in the top right corner
--   Click on 'Load unpacked' and select the cloned repository
+-   Go to `chrome://extensions/` in your Google Chrome browser
+-   Toggle the `Developer mode` in the top right corner
+-   Click on `Load unpacked` and select the cloned repository
 
 3. Open a website
 
