@@ -1,6 +1,30 @@
 @font-face {
 	font-family: Inter;
-	src: url('./assets/Inter.ttf') format('truetype');
+	src: url('./assets/fonts/Inter.ttf') format('truetype');
+}
+@font-face {
+	font-family: OpenDyslexic;
+	src: url('./assets/fonts/OpenDyslexic-Regular.otf') format('opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: OpenDyslexic;
+	src: url('./assets/fonts/OpenDyslexic-Italic.otf') format('opentype');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: OpenDyslexic;
+	src: url('./assets/fonts/OpenDyslexic-Bold.otf') format('opentype');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: OpenDyslexic;
+	src: url('./assets/fonts/OpenDyslexic-Bold-Italic.otf') format('opentype');
+	font-weight: bold;
+	font-style: italic;
 }
 
 *,
@@ -214,6 +238,21 @@ label.checkbox:has(:checked) {
 	border-top: 1px solid var(--primary-color);
 }
 
+/* radio with fonts */
+label:has(input[value='Arial']) {
+	font-family: 'Arial', sans-serif;
+}
+label:has(input[value='Montserrat']) {
+	font-family: 'Montserrat', sans-serif;
+}
+label:has(input[value='Inter']) {
+	font-family: 'Inter', sans-serif;
+}
+label:has(input[value='OpenDyslexic']) {
+	font-family: 'OpenDyslexic', sans-serif;
+}
+
+/* colorpicker */
 .color-picker {
 	display: flex;
 	align-items: center;

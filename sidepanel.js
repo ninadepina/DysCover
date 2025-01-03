@@ -1,5 +1,6 @@
 import { initializeCheckboxes } from './scripts/checkbox.js';
 import { initializeColorPicker } from './scripts/colorpicker.js';
+import { initializeFont } from './scripts/font.js';
 import { initializeSliders } from './scripts/sliders.js';
 import { initializeTextToSpeech } from './scripts/text-to-speech.js';
 
@@ -17,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	// sliders
 	initializeSliders(sliders, filters);
 
+	// font
+	initializeFont();
+	
 	// checkboxes
 	const invertCheckbox = document.querySelector('input[name="invert"]');
 	const monochromeCheckbox = document.querySelector('input[name="monochrome"]');
