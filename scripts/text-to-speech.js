@@ -1,10 +1,10 @@
 import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
 
-export const initializeTextToSpeech = (buttonId, alertMessage) => {
-	document.querySelector(buttonId).addEventListener('click', async () => {
+export const initializeTextToSpeech = (id, alertMsg) => {
+	document.querySelector(id).addEventListener('click', async () => {
 		await executeScriptOnActiveTab(() => {
 			const selectedText = window.getSelection().toString();
-			selectedText ? speechSynthesis.speak(new SpeechSynthesisUtterance(selectedText)) : alert(alertMessage);
+			selectedText ? speechSynthesis.speak(new SpeechSynthesisUtterance(selectedText)) : alert(alertMsg);
 		});
 	});
 };
