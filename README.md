@@ -4,9 +4,6 @@
 
 'DysCover' is a Google Chrome extension that allows (dyslexic) web users to adjust websites based on their preferences. The goal is to ease mental effort and reduce frustration/exhaustion.
 
-| [🛠️ Technologies used](https://github.com/ninadepina/DysCover#%EF%B8%8F-technologies-used) | [👩🏼‍💻 How to use](https://github.com/ninadepina/DysCover#-how-to-use) | [📄 License](https://github.com/ninadepina/DysCover#-license) |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- | ------------------------------------------------------------- |
-
 ---
 
 ## 🛠️ Technologies used
