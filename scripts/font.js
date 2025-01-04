@@ -1,16 +1,22 @@
 import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
 
-export const initializeFont = () => {
+export const initializeFont = (defaultFontLabel) => {
 	const updateFont = async () => {
 		await executeScriptOnActiveTab(() => {
-			const font = getComputedStyle(document.body).fontFamily;
-			chrome.runtime.sendMessage({ type: 'updateFont', font });
+			const computedStyle = getComputedStyle(document.body);
+			const font = computedStyle.fontFamily;
+			const fontWeight = computedStyle.fontWeight;
+			chrome.runtime.sendMessage({ type: 'updateFont', font, fontWeight });
 		});
 	};
 
 	chrome.runtime.onMessage.addListener((message) => {
 		if (message.type === 'updateFont') {
-			console.log('Current font:', message.font);
+			const { font, fontWeight } = message;
+			if (defaultFontLabel) {
+				defaultFontLabel.style.fontFamily = font;
+				defaultFontLabel.style.fontWeight = fontWeight;
+			}
 		}
 	});
 

@@ -19,8 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	initializeSliders(sliders, filters);
 
 	// font
-	initializeFont();
-	
+	const defaultFontLabel = document.querySelector('#default-font');
+	initializeFont(defaultFontLabel);
+
 	// checkboxes
 	const invertCheckbox = document.querySelector('input[name="invert"]');
 	const monochromeCheckbox = document.querySelector('input[name="monochrome"]');
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	// text-to-speech
 	initializeTextToSpeech(textToSpeechButton.id, textToSpeechButton.alert);
 
+	// global settings
 	document.querySelector('#global--update').addEventListener('click', () => {
 		const settings = sliders.map(({ id }) => ({ id, value: document.querySelector(id).value }));
 		localStorage.setItem('globalSettings', JSON.stringify(settings));
