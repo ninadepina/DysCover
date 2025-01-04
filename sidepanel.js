@@ -8,6 +8,7 @@ const sliders = [
 	{ id: '#slider-zoom', styleProp: 'zoom', unit: '', factor: 100 },
 	{ id: '#slider-size', styleProp: 'fontSize', unit: '%', factor: 1 },
 	{ id: '#slider-line', styleProp: 'lineHeight', unit: '%', factor: 1 },
+	// { id: '#slider-spacing', styleProp: 'letterSpacing', unit: 'px', factor: 1 },
 	{ id: '#slider-contrast', styleProp: 'filter', unit: '%', prefix: 'contrast(', suffix: ')' },
 	{ id: '#slider-saturation', styleProp: 'filter', unit: '%', prefix: 'saturate(', suffix: ')' }
 ];
