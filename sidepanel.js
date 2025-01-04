@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// font
 	const defaultFontLabel = document.querySelector('#default-font');
-	initializeFont(defaultFontLabel);
+	const defaultFontInput = document.querySelector('#default-font > input');
+	const fontButtons = document.querySelectorAll('input[name="font-family"]');
+	initializeFont(defaultFontLabel, defaultFontInput, fontButtons);
 
 	// checkboxes
 	const invertCheckbox = document.querySelector('input[name="invert"]');
