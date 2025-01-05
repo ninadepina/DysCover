@@ -94,14 +94,19 @@ button#speakButton {
 .hr {
 	border-top: 1px solid var(--primary-color);
 }
-
-h1,
-h2,
-p,
-span {
+/* prettier-ignore */
+h1, h2, p, span {
 	color: inherit;
 	font-weight: inherit;
 	line-height: normal;
+}
+/* h1 only for semantic value and screenreaders */
+h1 {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
 }
 
 h2.options-title,
@@ -114,7 +119,7 @@ h2.settings-title {
 section.extension {
 	display: flex;
 	flex-direction: column;
-	gap: 1.5rem;
+	gap: 1.375rem;
 	padding-block: 0.5rem;
 }
 
