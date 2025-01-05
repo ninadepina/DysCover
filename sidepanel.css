@@ -80,6 +80,10 @@ button {
 	cursor: pointer;
 }
 button#speakButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.25rem;
 	padding: 0.5rem;
 	background-color: var(--secondary-color);
 }
@@ -170,6 +174,9 @@ section.extension {
 .checkbox-title,
 .dropdown-title,
 .slider-title {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
 	white-space: nowrap;
 }
 
@@ -348,4 +355,58 @@ input[type='range'][name^='slider-']::-moz-range-thumb {
 }
 .tooltip--right .tooltip-text::after {
 	right: 10%;
+}
+
+/* icons */
+svg {
+	fill: none;
+	width: 12px;
+	height: 11px;
+}
+.svg--font {
+	width: 13px;
+}
+.svg--color {
+	width: 16px;
+	height: 12px;
+}
+.svg--line {
+	width: 18px;
+	height: 12px;
+}
+.svg--spacing {
+	width: 13px;
+	height: 12px;
+}
+.svg--invert,
+.svg--monochrome {
+	width: 10px;
+	height: 10px;
+}
+.svg--contrast {
+	width: 14px;
+	height: 14px;
+}
+.svg--saturation {
+	transform: rotate(-90deg);
+}
+.svg--tts {
+	width: 15px;
+	height: 13px;
+	margin-top: 1px;
+}
+svg:not(.svg--font):not(.svg--color):not(.svg--invert):not(.svg--monochrome) path {
+	stroke: var(--primary-color);
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+svg.svg--font path {
+	stroke: var(--primary-color);
+}
+.svg--settings {
+	width: 15px;
+	height: 15px;
+}
+.svg--settings path {
+	stroke-width: 1.2;
 }

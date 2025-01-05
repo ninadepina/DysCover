@@ -14,7 +14,10 @@
 				<div class="options-content">
 					<div class="slider">
 						<div class="slider-title">
-							<!-- svg here -->
+							<svg class="svg--zoom">
+								<path
+									d="M5.167 8.833a4.167 4.167 0 1 0 0-8.333 4.167 4.167 0 0 0 0 8.333ZM11 10.5 8.5 8" />
+							</svg>
 							<p>Zoom</p>
 						</div>
 
@@ -31,7 +34,10 @@
 					<div class="dropdown-group">
 						<div class="dropdown">
 							<div class="dropdown-title">
-								<!-- svg here -->
+								<svg class="svg--font">
+									<path
+										d="M5 2.75v-2h3.75m3.75 2v-2H8.75m0 0v9.5m0 0H7m1.75 0h1.75m-9.5-4v-1h2m2 1v-1H3m0 0v5m0 0h1m-1 0H2" />
+								</svg>
 								<p>Font family</p>
 							</div>
 
@@ -65,7 +71,12 @@
 
 						<div class="dropdown">
 							<div class="dropdown-title">
-								<!-- svg here -->
+								<svg class="svg--color">
+									<path
+										d="M6.03 8h-.924L7.776.727h.91L11.356 8h-.923L8.26 1.878h-.057L6.03 8Zm.34-2.84h3.722v.78H6.371v-.78Z"
+										fill="#07080F" />
+									<rect x=".851" y="10" width="15" height="2" rx=".4" fill="#07080F" />
+								</svg>
 								<p>Font colour</p>
 							</div>
 
@@ -80,7 +91,10 @@
 
 					<div class="slider">
 						<div class="slider-title">
-							<!-- svg here -->
+							<svg class="svg--font">
+								<path
+									d="M5 2.75v-2h3.75m3.75 2v-2H8.75m0 0v9.5m0 0H7m1.75 0h1.75m-9.5-4v-1h2m2 1v-1H3m0 0v5m0 0h1m-1 0H2" />
+							</svg>
 							<p>Font size</p>
 						</div>
 
@@ -91,7 +105,10 @@
 
 					<div class="slider">
 						<div class="slider-title">
-							<!-- svg here -->
+							<svg class="svg--line">
+								<path
+									d="M1 1.75h8M1 4.25h8M1 6.75h8M1 9.25h8M12 8.5l2 2 2-2M16 2.5l-2-2m0 0-2 2m2-2V10" />
+							</svg>
 							<p>Line height</p>
 						</div>
 
@@ -102,7 +119,10 @@
 
 					<div class="slider">
 						<div class="slider-title">
-							<!-- svg here -->
+							<svg class="svg--spacing">
+								<path d="M4 1.5v-1h2m2 1v-1H6m0 0v5m0 0h1m-1 0H5" />
+								<path d="m3 6.5-2 2 2 2M9 10.5l2-2m0 0-2-2m2 2H1.5" />
+							</svg>
 							<p>Letter spacing</p>
 						</div>
 
@@ -120,7 +140,14 @@
 						<label class="checkbox">
 							<input type="checkbox" name="invert" />
 							<div class="checkbox-title">
-								<!-- svg here -->
+								<svg class="svg--invert">
+									<mask id="a" fill="#fff"><path d="M5 0a5 5 0 0 1 0 10V0Z" /></mask>
+									<path
+										d="M5-1a6 6 0 0 1 6 6H9a4 4 0 0 0-4-4v-2Zm6 6a6 6 0 0 1-6 6V9a4 4 0 0 0 4-4h2Zm-6 5V0v10ZM5-1a6 6 0 1 1 0 12V9a4 4 0 1 0 0-8v-2Z"
+										fill="#07080F"
+										mask="url(#a)" />
+									<path d="M5 0a5 5 0 0 0 0 10V0Z" fill="#07080F" />
+								</svg>
 								<p>Invert colours</p>
 							</div>
 						</label>
@@ -128,7 +155,13 @@
 						<label class="checkbox">
 							<input type="checkbox" name="monochrome" />
 							<div class="checkbox-title">
-								<!-- svg here -->
+								<svg class="svg--monochrome">
+									<path
+										fill-rule="evenodd"
+										clip-rule="evenodd"
+										d="M5.5 1.031v7.938a4 4 0 0 0 0-7.938Zm-1 0v1.262L3.498 1.29a3.973 3.973 0 0 1 1.002-.26Zm0-1.006a5 5 0 1 0 1.001 9.95A5 5 0 0 0 4.5.026Zm0 8.944v-.244L1.054 5.662A4.003 4.003 0 0 0 4.5 8.969ZM1.057 4.326 4.5 7.386v-1.17L1.381 3.294c-.152.323-.263.67-.324 1.033Zm.873-1.89c.197-.236.42-.448.666-.633L4.5 3.707v1.139l-2.57-2.41Z"
+										fill="#07080F" />
+								</svg>
 								<p>Monochrome</p>
 							</div>
 						</label>
@@ -136,7 +169,16 @@
 
 					<div class="slider">
 						<div class="slider-title">
-							<!-- svg here -->
+							<svg class="svg--contrast">
+								<path d="M3.333 6.5a3.167 3.167 0 1 1 6.334 0 3.167 3.167 0 0 1-6.334 0Z" />
+								<path
+									d="M10.167 6.5H12M1 6.5h1.833M6.5 10.166V12M6.5 1v1.833M9.092 9.093l.865.864M3.041 3.041l.864.864M3.905 9.093l-.864.864M9.957 3.041l-.865.864" />
+								<path
+									fill-rule="evenodd"
+									clip-rule="evenodd"
+									d="M6.5 2.833a3.667 3.667 0 0 0 0 7.334V2.834h.006H6.5Z"
+									fill="#07080F" />
+							</svg>
 							<p>Contrast</p>
 						</div>
 
@@ -147,7 +189,14 @@
 
 					<div class="slider">
 						<div class="slider-title">
-							<!-- svg here -->
+							<svg class="svg--invert svg--saturation">
+								<mask id="a" fill="#fff"><path d="M5 0a5 5 0 0 1 0 10V0Z" /></mask>
+								<path
+									d="M5-1a6 6 0 0 1 6 6H9a4 4 0 0 0-4-4v-2Zm6 6a6 6 0 0 1-6 6V9a4 4 0 0 0 4-4h2Zm-6 5V0v10ZM5-1a6 6 0 1 1 0 12V9a4 4 0 1 0 0-8v-2Z"
+									fill="#07080F"
+									mask="url(#a)" />
+								<path d="M5 0a5 5 0 0 0 0 10V0Z" fill="#07080F" />
+							</svg>
 							<p>Saturation</p>
 						</div>
 
@@ -168,7 +217,15 @@
 				<h2 class="options-title">Text-to-speech</h2>
 				<div class="options-content">
 					<div class="button-container">
-						<button id="speakButton">Speak selected text</button>
+						<button id="speakButton">
+							<svg class="svg--tts">
+								<path
+									d="M4.844 10.609H1.96A.96.96 0 0 1 1 9.649V1.96A.96.96 0 0 1 1.96 1h3.845l2.882 2.883v3.805" />
+								<path
+									d="M5.805 1v2.883h2.882M6.765 6.285H2.922M6.765 8.207H2.922M3.883 4.363h-.961M10.061 6.688l-1.887 1.51h-1.51v2.265h1.51l1.887 1.51V6.688ZM13.108 6.662a3.775 3.775 0 0 1 0 5.338m-1.333-4.006a1.888 1.888 0 0 1 0 2.67" />
+							</svg>
+							Speak selected text
+						</button>
 					</div>
 				</div>
 			</article>
