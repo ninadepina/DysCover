@@ -45,6 +45,28 @@ export const initializeSliders = (sliders, filters) => {
 		}, scaleFactor);
 	};
 
+	const updateLineHeight = async (slider) => {
+		const scaleFactor = slider.value / 100;
+		updateSliderLabel(slider, slider.value);
+
+		await executeScriptOnActiveTab((scaleFactor) => {
+			if (!window.originalLineHeights) {
+				window.originalLineHeights = new Map();
+				document.querySelectorAll('*').forEach((el) => {
+					const computedStyle = window.getComputedStyle(el);
+					const lineHeight = parseFloat(computedStyle.lineHeight);
+					if (!isNaN(lineHeight)) {
+						window.originalLineHeights.set(el, lineHeight);
+					}
+				});
+			}
+
+			window.originalLineHeights.forEach((originalLineHeight, el) => {
+				el.style.lineHeight = `${originalLineHeight * scaleFactor}px`;
+			});
+		}, scaleFactor);
+	};
+
 	const updateFilter = async (type, value, slider) => {
 		updateSliderLabel(slider, value);
 		filters[type] = `${value}%`;
@@ -69,6 +91,9 @@ export const initializeSliders = (sliders, filters) => {
 					break;
 				case 'filter':
 					updateFilter(prefix.replace('(', ''), slider.value, slider);
+					break;
+				case 'lineHeight':
+					updateLineHeight(slider);
 					break;
 				default:
 					updateStyle(slider, styleProp, unit, prefix, suffix);
