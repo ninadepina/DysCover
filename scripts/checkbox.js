@@ -2,9 +2,10 @@ import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
 
 export const initializeCheckboxes = (invertCheckbox, monochromeCheckbox, activeFilters) => {
 	const updateFilters = async () => {
-		const filters = [];
-		if (activeFilters.invert) filters.push('invert(100%)');
-		if (activeFilters.monochrome) filters.push('grayscale(100%)');
+		const filters = [
+			activeFilters.invert && 'invert(100%)',
+			activeFilters.monochrome && 'grayscale(100%)',
+		].filter(Boolean); // remove any falsy values
 
 		const filterString = filters.join(' ');
 		await executeScriptOnActiveTab((filter) => {

@@ -1,8 +1,10 @@
 export const executeScriptOnActiveTab = async (func, ...args) => {
-	const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-	const { id: tabId, url } = tab;
+	const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+	if (!activeTab || !activeTab.url) return;
 
-	if (!url.startsWith('chrome://') && !url.startsWith('chrome-extension://')) {
-		chrome.scripting.executeScript({ target: { tabId }, func, args });
+	const { id: tabId, url } = activeTab;
+
+	if (!/^chrome(|-extension):\/\//.test(url)) {
+		await chrome.scripting.executeScript({ target: { tabId }, func, args });
 	}
 };

@@ -1,17 +1,17 @@
 import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
-import { rgbToHex } from "./utils/rgbToHex.js";
+import { rgbToHex } from './utils/rgbToHex.js';
 
 export const initializeColorPicker = (colorPicker, colorPickerText) => {
 	const updateColorPicker = async () => {
 		await executeScriptOnActiveTab(() => {
-			const color = getComputedStyle(document.body).color;
+			const { color } = getComputedStyle(document.body);
 			chrome.runtime.sendMessage({ type: 'updateColorPicker', color });
 		});
 	};
 
-	chrome.runtime.onMessage.addListener((message) => {
-		if (message.type === 'updateColorPicker') {
-			const hexColor = rgbToHex(message.color);
+	chrome.runtime.onMessage.addListener(({ type, color }) => {
+		if (type === 'updateColorPicker') {
+			const hexColor = rgbToHex(color);
 			colorPicker.value = hexColor;
 			colorPickerText.textContent = hexColor;
 		}

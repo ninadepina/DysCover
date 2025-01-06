@@ -1,7 +1,8 @@
 export const rgbToHex = (rgb) => {
-	const result = rgb
+	const hex = rgb
 		.match(/\d+/g)
-		.map((num) => parseInt(num).toString(16).padStart(2, '0'))
+		?.map((num) => Number(num).toString(16).padStart(2, '0'))
 		.join('');
-	return `#${result}`;
+
+	return hex ? `#${hex}` : null;
 };

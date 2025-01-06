@@ -3,10 +3,8 @@ import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
 export const initializeFont = (defaultFontLabel, defaultFontInput, fontButtons) => {
 	const updateFont = async () => {
 		await executeScriptOnActiveTab(() => {
-			const computedStyle = getComputedStyle(document.body);
-			const font = computedStyle.fontFamily;
-			const fontWeight = computedStyle.fontWeight;
-			chrome.runtime.sendMessage({ type: 'updateFont', font, fontWeight });
+			const { fontFamily, fontWeight } = getComputedStyle(document.body);
+			chrome.runtime.sendMessage({ type: 'updateFont', font: fontFamily, fontWeight });
 		});
 	};
 
@@ -16,23 +14,16 @@ export const initializeFont = (defaultFontLabel, defaultFontInput, fontButtons) 
 		}, fontFamily);
 	};
 
-	chrome.runtime.onMessage.addListener((message) => {
-		if (message.type === 'updateFont') {
-			const { font, fontWeight } = message;
-			if (defaultFontLabel) {
-				defaultFontLabel.style.fontFamily = font;
-				defaultFontLabel.style.fontWeight = fontWeight;
-			}
-			if (defaultFontInput) {
-				defaultFontInput.value = font;
-			}
+	chrome.runtime.onMessage.addListener(({ type, font, fontWeight }) => {
+		if (type === 'updateFont') {
+			if (defaultFontLabel) Object.assign(defaultFontLabel.style, { fontFamily: font, fontWeight });
+			if (defaultFontInput) defaultFontInput.value = font;
 		}
 	});
 
 	fontButtons.forEach((button) => {
-		button.addEventListener('change', (event) => {
-			const selectedFont = event.target.value;
-			handleFontChange(selectedFont);
+		button.addEventListener('change', (e) => {
+			handleFontChange(e.target.value);
 		});
 	});
 
