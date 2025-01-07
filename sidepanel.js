@@ -39,24 +39,24 @@ document.addEventListener('DOMContentLoaded', () => {
 	// text-to-speech
 	initializeTextToSpeech(textToSpeechButton.id, textToSpeechButton.alert);
 
-	// global settings
-	document.querySelector('#global--update').addEventListener('click', () => {
-		const settings = sliders.map(({ id }) => ({ id, value: document.querySelector(id).value }));
-		localStorage.setItem('globalSettings', JSON.stringify(settings));
-		alert('Settings saved!');
-	});
+	// global settings (WIP)
+	// document.querySelector('#global--update').addEventListener('click', () => {
+	// 	const settings = sliders.map(({ id }) => ({ id, value: document.querySelector(id).value }));
+	// 	localStorage.setItem('globalSettings', JSON.stringify(settings));
+	// 	alert('Settings saved!');
+	// });
 
-	document.querySelector('#global--apply').addEventListener('click', () => {
-		const settings = JSON.parse(localStorage.getItem('globalSettings'));
-		if (!settings) {
-			alert('No settings found!');
-			return;
-		}
+	// document.querySelector('#global--apply').addEventListener('click', () => {
+	// 	const settings = JSON.parse(localStorage.getItem('globalSettings'));
+	// 	if (!settings) {
+	// 		alert('No settings found!');
+	// 		return;
+	// 	}
 
-		settings.forEach(({ id, value }) => {
-			const slider = document.querySelector(id);
-			slider.value = value;
-			slider.dispatchEvent(new Event('input'));
-		});
-	});
+	// 	settings.forEach(({ id, value }) => {
+	// 		const slider = document.querySelector(id);
+	// 		slider.value = value;
+	// 		slider.dispatchEvent(new Event('input'));
+	// 	});
+	// });
 });
