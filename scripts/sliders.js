@@ -11,11 +11,9 @@ export const initializeSliders = (sliders, filters) => {
 
 		await executeScriptOnActiveTab(
 			(prop, val, unit) => {
-				if (prop === 'zoom') {
-					document.body.style.zoom = val / 100;
-				} else {
-					document.querySelectorAll('*').forEach((el) => (el.style[prop] = val + unit));
-				}
+				prop === 'zoom'
+					? (document.body.style.zoom = val / 100)
+					: document.querySelectorAll('*').forEach((el) => (el.style[prop] = val + unit));
 			},
 			styleProp,
 			parseInt(value, 10),
