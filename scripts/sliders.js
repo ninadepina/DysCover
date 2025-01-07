@@ -5,9 +5,15 @@ export const initializeSliders = (sliders, filters) => {
 		slider.nextElementSibling.querySelector('span').textContent = value;
 	};
 
-	const updateStyle = async (slider, styleProp, unit, prefix = '', suffix = '') => {
-		const value = slider.value;
-		updateSliderLabel(slider, value);
+	const updateStyle = async (slider, styleProp, unit, prefix = '', suffix = '', factor = 1, base = 0) => {
+		const value = styleProp === 'letterSpacing' ? ((slider.value - 100) * factor) / 100 + base : slider.value;
+		// prettier-ignore
+		const labelValue = 
+			styleProp === 'letterSpacing' 
+				? `${(value + 100).toFixed(0)}` 
+				: value;
+
+		updateSliderLabel(slider, labelValue);
 
 		await executeScriptOnActiveTab(
 			(prop, val, unit) => {
@@ -16,10 +22,8 @@ export const initializeSliders = (sliders, filters) => {
 					: document.querySelectorAll('*').forEach((el) => (el.style[prop] = val + unit));
 			},
 			styleProp,
-			parseInt(value, 10),
-			unit,
-			prefix,
-			suffix
+			value,
+			unit
 		);
 	};
 
@@ -77,7 +81,7 @@ export const initializeSliders = (sliders, filters) => {
 		}, filterString);
 	};
 
-	sliders.forEach(({ id, styleProp, unit, prefix = '', suffix = '' }) => {
+	sliders.forEach(({ id, styleProp, unit, prefix = '', suffix = '', factor = 1, base = 0 }) => {
 		const slider = document.querySelector(id);
 
 		if (!slider) return;
@@ -94,7 +98,7 @@ export const initializeSliders = (sliders, filters) => {
 					updateLineHeight(slider);
 					break;
 				default:
-					updateStyle(slider, styleProp, unit, prefix, suffix);
+					updateStyle(slider, styleProp, unit, prefix, suffix, factor, base);
 					break;
 			}
 		});
