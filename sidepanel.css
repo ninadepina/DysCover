@@ -159,6 +159,11 @@ section.extension {
 	align-items: center;
 	padding: 0.875rem;
 }
+.dropdown.setting,
+.dropdown.setting .dropdown-item {
+	display: flex;
+	justify-content: space-between;
+}
 
 .slider {
 	display: grid;
@@ -224,9 +229,18 @@ label.checkbox:has(:checked) {
 	display: none;
 	position: absolute;
 	top: 100%;
+	left: 0;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+}
+.dropdown-content:has(.dropdown-item),
+.dropdown-content:has(.color-picker) {
+	border: 1px solid var(--primary-color);
+}
+.setting .dropdown-content {
+	top: initial;
+	bottom: 100%;
 }
 .dropdown-content:hover,
 .dropdown-content:focus-within,

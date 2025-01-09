@@ -43,5 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	// global settings
 	const globalUpdateButton = document.querySelector('#global--update');
 	const globalApplyButton = document.querySelector('#global--apply');
-	initializeGlobalSettings(sliders, globalUpdateButton, globalApplyButton);
+	const specificAddButton = document.querySelector('#specific--add');
+	initializeGlobalSettings(sliders, globalUpdateButton, globalApplyButton, specificAddButton);
 });
