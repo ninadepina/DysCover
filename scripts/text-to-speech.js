@@ -1,6 +1,7 @@
 import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
 
-export const initializeTextToSpeech = (id, alertMsg) => {
+export const initializeTextToSpeech = (textToSpeechButton) => {
+	const { id, alert: alertMsg } = textToSpeechButton;
 	document.querySelector(id).addEventListener('click', async () => {
 		await executeScriptOnActiveTab(() => {
 			const selectedText = window.getSelection().toString();
