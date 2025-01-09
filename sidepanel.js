@@ -3,6 +3,7 @@ import { initializeColorPicker } from './scripts/colorpicker.js';
 import { initializeFont } from './scripts/font.js';
 import { initializeSliders } from './scripts/sliders.js';
 import { initializeTextToSpeech } from './scripts/text-to-speech.js';
+import { initializeGlobalSettings } from './scripts/settings.js';
 
 const sliders = [
 	{ id: '#slider-zoom', styleProp: 'zoom', unit: '', factor: 100 },
@@ -37,26 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	initializeColorPicker(colorPicker, colorPickerText);
 
 	// text-to-speech
-	initializeTextToSpeech(textToSpeechButton.id, textToSpeechButton.alert);
+	initializeTextToSpeech(textToSpeechButton);
 
-	// global settings (WIP)
-	// document.querySelector('#global--update').addEventListener('click', () => {
-	// 	const settings = sliders.map(({ id }) => ({ id, value: document.querySelector(id).value }));
-	// 	localStorage.setItem('globalSettings', JSON.stringify(settings));
-	// 	alert('Settings saved!');
-	// });
-
-	// document.querySelector('#global--apply').addEventListener('click', () => {
-	// 	const settings = JSON.parse(localStorage.getItem('globalSettings'));
-	// 	if (!settings) {
-	// 		alert('No settings found!');
-	// 		return;
-	// 	}
-
-	// 	settings.forEach(({ id, value }) => {
-	// 		const slider = document.querySelector(id);
-	// 		slider.value = value;
-	// 		slider.dispatchEvent(new Event('input'));
-	// 	});
-	// });
+	// global settings
+	const globalUpdateButton = document.querySelector('#global--update');
+	const globalApplyButton = document.querySelector('#global--apply');
+	initializeGlobalSettings(sliders, globalUpdateButton, globalApplyButton);
 });
