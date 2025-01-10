@@ -32,11 +32,9 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 			applyTooltip.addEventListener('click', () => {
 				settings.forEach(({ id, value }) => {
 					const inputElement = document.querySelector(id);
-					if (inputElement.type === 'checkbox') {
-						inputElement.checked = value;
-					} else {
-						inputElement.value = value;
-					}
+					inputElement.type === 'checkbox'
+						? inputElement.checked = value
+						: inputElement.value = value;
 					inputElement.dispatchEvent(new Event('input'));
 				});
 			});
@@ -84,6 +82,7 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 			}
 
 			const specificSettings = JSON.parse(localStorage.getItem('specificSettings')) || [];
+
 			const specificSetting = specificSettings.find((setting) => setting.site === siteNameText);
 
 			if (specificSetting) {
@@ -91,7 +90,7 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 					const inputElement = document.querySelector(id);
 					if (inputElement.type === 'checkbox') {
 						inputElement.checked = value;
-						inputElement.dispatchEvent(new Event('change')); // Dispatch 'change' for checkboxes
+						inputElement.dispatchEvent(new Event('change'));
 					} else {
 						inputElement.value = value;
 						inputElement.dispatchEvent(new Event('input'));
@@ -100,6 +99,14 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 			} else {
 				applyGlobalSettings();
 			}
+		});
+	};
+
+	const resetToDefaultSettings = () => {
+		const sliders = document.querySelectorAll('input[type="range"], input[type="number"]');
+		sliders.forEach((slider) => {
+			slider.value = 100;
+			slider.dispatchEvent(new Event('input'));
 		});
 	};
 
@@ -164,6 +171,7 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 	chrome.tabs.onActivated.addListener(() => {
 		applySpecificSettings();
 	});
+
 	chrome.tabs.onUpdated.addListener(() => {
 		applySpecificSettings();
 	});
