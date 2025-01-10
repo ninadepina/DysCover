@@ -31,9 +31,13 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 			const applyTooltip = createTooltip('use these site settings', 'apply', site);
 			applyTooltip.addEventListener('click', () => {
 				settings.forEach(({ id, value }) => {
-					const slider = document.querySelector(id);
-					slider.value = value;
-					slider.dispatchEvent(new Event('input'));
+					const inputElement = document.querySelector(id);
+					if (inputElement.type === 'checkbox') {
+						inputElement.checked = value;
+					} else {
+						inputElement.value = value;
+					}
+					inputElement.dispatchEvent(new Event('input'));
 				});
 			});
 			settingOptions.appendChild(applyTooltip);
@@ -42,10 +46,7 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 			const updateTooltip = createTooltip('save current settings to site', 'update', site);
 			updateTooltip.classList.add('tooltip--right');
 			updateTooltip.addEventListener('click', () => {
-				const updatedSettings = sliders.map(({ id }) => ({
-					id,
-					value: document.querySelector(id).value
-				}));
+				const updatedSettings = collectCurrentSettings(sliders, inputs);
 				specificSettings[index].settings = updatedSettings;
 				localStorage.setItem('specificSettings', JSON.stringify(specificSettings));
 			});
@@ -61,9 +62,14 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 		if (!settings) return;
 
 		settings.forEach(({ id, value }) => {
-			const slider = document.querySelector(id);
-			slider.value = value;
-			slider.dispatchEvent(new Event('input'));
+			const inputElement = document.querySelector(id);
+			if (inputElement.type === 'checkbox') {
+				inputElement.checked = value;
+				inputElement.dispatchEvent(new Event('change'));
+			} else {
+				inputElement.value = value;
+				inputElement.dispatchEvent(new Event('input'));
+			}
 		});
 	};
 
@@ -78,14 +84,18 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 			}
 
 			const specificSettings = JSON.parse(localStorage.getItem('specificSettings')) || [];
-
 			const specificSetting = specificSettings.find((setting) => setting.site === siteNameText);
 
 			if (specificSetting) {
 				specificSetting.settings.forEach(({ id, value }) => {
-					const slider = document.querySelector(id);
-					slider.value = value;
-					slider.dispatchEvent(new Event('input'));
+					const inputElement = document.querySelector(id);
+					if (inputElement.type === 'checkbox') {
+						inputElement.checked = value;
+						inputElement.dispatchEvent(new Event('change')); // Dispatch 'change' for checkboxes
+					} else {
+						inputElement.value = value;
+						inputElement.dispatchEvent(new Event('input'));
+					}
 				});
 			} else {
 				applyGlobalSettings();
@@ -93,18 +103,35 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 		});
 	};
 
-	const resetToDefaultSettings = () => {
-		const sliders = document.querySelectorAll('input[type="range"], input[type="number"]');
-		sliders.forEach((slider) => {
-			slider.value = 100;
-			slider.dispatchEvent(new Event('input'));
+	const collectCurrentSettings = (sliders, inputs) => {
+		const sliderValues = sliders.map(({ id }) => ({
+			id,
+			value: document.querySelector(id).value
+		}));
+
+		const inputValues = inputs.map(({ name }) => {
+			const inputElement = document.querySelector(`[name="${name}"]`);
+			let value;
+
+			if (inputElement.type === 'checkbox') {
+				value = inputElement.checked;
+			} else if (inputElement.type === 'radio') {
+				const checkedRadio = document.querySelector(`[name="${name}"]:checked`);
+				value = checkedRadio ? checkedRadio.value : null;
+			} else {
+				value = inputElement.value;
+			}
+
+			return { id: `[name="${name}"]`, value };
 		});
+
+		return [...sliderValues, ...inputValues];
 	};
 
 	loadSpecificSettings();
 
 	globalUpdateButton.addEventListener('click', () => {
-		const settings = sliders.map(({ id }) => ({ id, value: document.querySelector(id).value }));
+		const settings = collectCurrentSettings(sliders, inputs);
 		localStorage.setItem('globalSettings', JSON.stringify(settings));
 	});
 
@@ -121,14 +148,11 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 
 			if (siteExists) return;
 
-			const slidersData = sliders.map(({ id }) => ({
-				id,
-				value: document.querySelector(id).value
-			}));
+			const currentSettings = collectCurrentSettings(sliders, inputs);
 
 			specificSettings.push({
 				site: siteNameText,
-				settings: slidersData
+				settings: currentSettings
 			});
 
 			localStorage.setItem('specificSettings', JSON.stringify(specificSettings));
