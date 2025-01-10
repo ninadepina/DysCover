@@ -257,7 +257,7 @@ label.checkbox:has(:checked) {
 	transition-property: background-color, color;
 	cursor: pointer;
 }
-.dropdown-item:hover {
+.dropdown-item:not(:has(:checked)):hover {
 	background-color: var(--tertiary-color);
 }
 .dropdown-item:has(:checked) {
@@ -266,6 +266,13 @@ label.checkbox:has(:checked) {
 }
 .dropdown-item + .dropdown-item {
 	border-top: 1px solid var(--primary-color);
+}
+
+.dropdown-content--specific .dropdown-item {
+	cursor: default;
+}
+.dropdown-content--specific .dropdown-item:hover {
+	background-color: var(--secondary-color);
 }
 
 /* radio with fonts */
