@@ -48,7 +48,6 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 				}));
 				specificSettings[index].settings = updatedSettings;
 				localStorage.setItem('specificSettings', JSON.stringify(specificSettings));
-				alert(`Settings for "${site}" updated!`);
 			});
 			settingOptions.appendChild(updateTooltip);
 
@@ -59,10 +58,7 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 
 	const applyGlobalSettings = () => {
 		const settings = JSON.parse(localStorage.getItem('globalSettings'));
-		if (!settings) {
-			alert('No global settings found!');
-			return;
-		}
+		if (!settings) return;
 
 		settings.forEach(({ id, value }) => {
 			const slider = document.querySelector(id);
@@ -110,7 +106,6 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 	globalUpdateButton.addEventListener('click', () => {
 		const settings = sliders.map(({ id }) => ({ id, value: document.querySelector(id).value }));
 		localStorage.setItem('globalSettings', JSON.stringify(settings));
-		alert('Global settings saved!');
 	});
 
 	globalApplyButton.addEventListener('click', applyGlobalSettings);
@@ -124,10 +119,7 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 
 			const siteExists = specificSettings.some((setting) => setting.site === siteNameText);
 
-			if (siteExists) {
-				alert(`Settings for "${siteNameText}" already exist!`);
-				return;
-			}
+			if (siteExists) return;
 
 			const slidersData = sliders.map(({ id }) => ({
 				id,
