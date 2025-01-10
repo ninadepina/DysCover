@@ -13,6 +13,12 @@ const sliders = [
 	{ id: '#slider-contrast', styleProp: 'filter', unit: '%', prefix: 'contrast(', suffix: ')' },
 	{ id: '#slider-saturation', styleProp: 'filter', unit: '%', prefix: 'saturate(', suffix: ')' }
 ];
+const inputs = [
+	{ name: 'font-family', type: 'radio' },
+	{ name: 'font-color', type: 'color' },
+	{ name: 'invert', type: 'checkbox' },
+	{ name: 'monochrome', type: 'checkbox' }
+];
 const textToSpeechButton = { id: '#speakButton', alert: 'Please select some text to speak!' };
 const filters = { contrast: '100%', saturate: '100%' };
 
@@ -44,5 +50,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	const globalUpdateButton = document.querySelector('#global--update');
 	const globalApplyButton = document.querySelector('#global--apply');
 	const specificAddButton = document.querySelector('#specific--add');
-	initializeGlobalSettings(sliders, globalUpdateButton, globalApplyButton, specificAddButton);
+	initializeGlobalSettings(sliders, inputs, globalUpdateButton, globalApplyButton, specificAddButton);
 });

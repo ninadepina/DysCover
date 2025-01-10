@@ -1,6 +1,6 @@
 import { createTooltip } from './utils/createTooltip.js';
 
-export const initializeGlobalSettings = (sliders, globalUpdateButton, globalApplyButton, specificAddButton) => {
+export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, globalApplyButton, specificAddButton) => {
 	const loadSpecificSettings = () => {
 		const specificSettings = JSON.parse(localStorage.getItem('specificSettings')) || [];
 		const dropdownContent = document.querySelector('.dropdown-content--specific');
