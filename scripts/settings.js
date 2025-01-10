@@ -18,7 +18,7 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 			const settingOptions = document.createElement('div');
 			settingOptions.classList.add('setting-options');
 
-			// Remove button
+			// remove button
 			const removeTooltip = createTooltip('remove settings for this site', 'remove', site);
 			removeTooltip.addEventListener('click', () => {
 				specificSettings.splice(index, 1);
@@ -27,7 +27,7 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 			});
 			settingOptions.appendChild(removeTooltip);
 
-			// Apply button
+			// apply button
 			const applyTooltip = createTooltip('use these site settings', 'apply', site);
 			applyTooltip.addEventListener('click', () => {
 				settings.forEach(({ id, value }) => {
@@ -38,7 +38,7 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 			});
 			settingOptions.appendChild(applyTooltip);
 
-			// Update button
+			// update button
 			const updateTooltip = createTooltip('save current settings to site', 'update', site);
 			updateTooltip.classList.add('tooltip--right');
 			updateTooltip.addEventListener('click', () => {
@@ -57,15 +57,7 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 		});
 	};
 
-	loadSpecificSettings();
-
-	globalUpdateButton.addEventListener('click', () => {
-		const settings = sliders.map(({ id }) => ({ id, value: document.querySelector(id).value }));
-		localStorage.setItem('globalSettings', JSON.stringify(settings));
-		alert('Global settings saved!');
-	});
-
-	globalApplyButton.addEventListener('click', () => {
+	const applyGlobalSettings = () => {
 		const settings = JSON.parse(localStorage.getItem('globalSettings'));
 		if (!settings) {
 			alert('No global settings found!');
@@ -77,10 +69,52 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 			slider.value = value;
 			slider.dispatchEvent(new Event('input'));
 		});
-		alert('Global settings applied!');
+	};
+
+	const applySpecificSettings = () => {
+		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+			const activeTab = tabs[0];
+			const siteNameText = new URL(activeTab.url).hostname || activeTab.url;
+
+			if (/^chrome(|-extension):\/\//.test(activeTab.url)) {
+				resetToDefaultSettings();
+				return;
+			}
+
+			const specificSettings = JSON.parse(localStorage.getItem('specificSettings')) || [];
+
+			const specificSetting = specificSettings.find((setting) => setting.site === siteNameText);
+
+			if (specificSetting) {
+				specificSetting.settings.forEach(({ id, value }) => {
+					const slider = document.querySelector(id);
+					slider.value = value;
+					slider.dispatchEvent(new Event('input'));
+				});
+			} else {
+				applyGlobalSettings();
+			}
+		});
+	};
+
+	const resetToDefaultSettings = () => {
+		const sliders = document.querySelectorAll('input[type="range"], input[type="number"]');
+		sliders.forEach((slider) => {
+			slider.value = 100;
+			slider.dispatchEvent(new Event('input'));
+		});
+	};
+
+	loadSpecificSettings();
+
+	globalUpdateButton.addEventListener('click', () => {
+		const settings = sliders.map(({ id }) => ({ id, value: document.querySelector(id).value }));
+		localStorage.setItem('globalSettings', JSON.stringify(settings));
+		alert('Global settings saved!');
 	});
 
-	// Add Specific Settings Button functionality
+	globalApplyButton.addEventListener('click', applyGlobalSettings);
+
 	specificAddButton.addEventListener('click', () => {
 		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 			const activeTab = tabs[0];
@@ -109,5 +143,12 @@ export const initializeGlobalSettings = (sliders, globalUpdateButton, globalAppl
 
 			loadSpecificSettings();
 		});
+	});
+
+	chrome.tabs.onActivated.addListener(() => {
+		applySpecificSettings();
+	});
+	chrome.tabs.onUpdated.addListener(() => {
+		applySpecificSettings();
 	});
 };
