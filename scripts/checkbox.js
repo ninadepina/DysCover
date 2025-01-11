@@ -1,10 +1,10 @@
 import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
 
-export const initializeCheckboxes = (invertCheckbox, monochromeCheckbox, activeFilters) => {
+export const initializeCheckboxes = (invertCheckbox, monochromeCheckbox) => {
 	const updateFilters = async () => {
 		const filters = [
-			activeFilters.invert && 'invert(100%)',
-			activeFilters.monochrome && 'grayscale(100%)',
+			invertCheckbox.checked && 'invert(100%)',
+			monochromeCheckbox.checked && 'grayscale(100%)',
 		].filter(Boolean); // remove any falsy values
 
 		const filterString = filters.join(' ');
@@ -13,13 +13,6 @@ export const initializeCheckboxes = (invertCheckbox, monochromeCheckbox, activeF
 		}, filterString);
 	};
 
-	invertCheckbox.addEventListener('change', async () => {
-		activeFilters.invert = invertCheckbox.checked;
-		await updateFilters();
-	});
-
-	monochromeCheckbox.addEventListener('change', async () => {
-		activeFilters.monochrome = monochromeCheckbox.checked;
-		await updateFilters();
-	});
+	invertCheckbox.addEventListener('change', updateFilters);
+	monochromeCheckbox.addEventListener('change', updateFilters);
 };

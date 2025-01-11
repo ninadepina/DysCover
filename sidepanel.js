@@ -31,8 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	// checkboxes
 	const invertCheckbox = document.querySelector('input[name="invert"]');
 	const monochromeCheckbox = document.querySelector('input[name="monochrome"]');
-	const activeFilters = { invert: false, monochrome: false };
-	initializeCheckboxes(invertCheckbox, monochromeCheckbox, activeFilters);
+	initializeCheckboxes(invertCheckbox, monochromeCheckbox);
 
 	// colorpicker
 	const colorPicker = document.querySelector('input[name="font-color"]');
