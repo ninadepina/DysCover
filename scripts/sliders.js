@@ -73,15 +73,23 @@ export const initializeSliders = (sliders, filters) => {
 	};
 
 	const updateFilter = async (type, value, slider) => {
+		const existingFilters = document.body.getAttribute('data-filter') || '';
+
 		updateSliderLabel(slider, value);
 
 		activeFilters[type] = `${value}%`;
-
 		const filterString = Object.entries(activeFilters)
 			.map(([key, val]) => `${key}(${val})`)
 			.join(' ');
 
-		await applyFilters(filterString);
+		const filteredExisting = existingFilters
+			.split(' ')
+			.filter(filter => !filter.startsWith(`${type}(`))
+			.join(' ');
+
+		const combinedFilterString = [...new Set(`${filteredExisting} ${filterString}`.split(/\s+/))].join(' ');
+
+		await applyFilters(combinedFilterString);
 	};
 
 	sliders.forEach(({ id, styleProp, unit, prefix = '', suffix = '', factor = 1, base = 0 }) => {
