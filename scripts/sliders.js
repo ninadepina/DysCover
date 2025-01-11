@@ -1,6 +1,9 @@
+import { applyFilters } from './utils/applyFilters.js';
 import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
 
 export const initializeSliders = (sliders, filters) => {
+	const activeFilters = {};
+
 	const updateSliderLabel = (slider, value) => {
 		slider.nextElementSibling.querySelector('span').textContent = value;
 	};
@@ -72,20 +75,13 @@ export const initializeSliders = (sliders, filters) => {
 	const updateFilter = async (type, value, slider) => {
 		updateSliderLabel(slider, value);
 
-		const filterStyles = filters
-			.filter((filter) => filter.type === 'slider')
-			.reduce((acc, filter) => {
-				acc[filter.name] = filter.name === type ? `${value}%` : acc[filter.name] || '100%';
-				return acc;
-			}, {});
+		activeFilters[type] = `${value}%`;
 
-		const filterString = Object.entries(filterStyles)
+		const filterString = Object.entries(activeFilters)
 			.map(([key, val]) => `${key}(${val})`)
 			.join(' ');
 
-		await executeScriptOnActiveTab((filterString) => {
-			document.body.style.filter = filterString;
-		}, filterString);
+		await applyFilters(filterString);
 	};
 
 	sliders.forEach(({ id, styleProp, unit, prefix = '', suffix = '', factor = 1, base = 0 }) => {
