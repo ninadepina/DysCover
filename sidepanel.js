@@ -13,10 +13,28 @@ const sliders = [
 	{ id: '#slider-contrast', styleProp: 'filter', unit: '%', prefix: 'contrast(', suffix: ')' },
 	{ id: '#slider-saturation', styleProp: 'filter', unit: '%', prefix: 'saturate(', suffix: ')' }
 ];
-const sharedEntries = [{ name: 'invert', type: 'checkbox' }, { name: 'monochrome', type: 'checkbox' }];
-const inputs = [{ name: 'font-family', type: 'radio' }, { name: 'font-color', type: 'color' }, ...sharedEntries];
-const filters = [{ name: 'contrast', type: 'slider' }, { name: 'saturate', type: 'slider' }, ...sharedEntries];
-const textToSpeechButton = { id: '#speakButton', alert: 'Please select some text to speak!' };
+
+const sharedEntries = [
+	{ name: 'invert', type: 'checkbox' },
+	{ name: 'monochrome', type: 'checkbox' }
+];
+
+const inputs = [
+	{ name: 'font-family', type: 'radio' },
+	{ name: 'font-color', type: 'color' },
+	...sharedEntries
+];
+
+const filters = [
+	{ name: 'contrast', type: 'slider' },
+	{ name: 'saturate', type: 'slider' },
+	...sharedEntries
+];
+
+const textToSpeechButton = {
+	id: '#speakButton',
+	alert: 'Please select some text to speak!'
+};
 
 document.addEventListener('DOMContentLoaded', () => {
 	// sliders
