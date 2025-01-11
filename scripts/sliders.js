@@ -8,9 +8,9 @@ export const initializeSliders = (sliders, filters) => {
 	const updateStyle = async (slider, styleProp, unit, prefix = '', suffix = '', factor = 1, base = 0) => {
 		const value = styleProp === 'letterSpacing' ? ((slider.value - 100) * factor) / 100 + base : slider.value;
 		// prettier-ignore
-		const labelValue = 
-			styleProp === 'letterSpacing' 
-				? `${(value + 100).toFixed(0)}` 
+		const labelValue =
+			styleProp === 'letterSpacing'
+				? `${(value + 100).toFixed(0)}`
 				: value;
 
 		updateSliderLabel(slider, labelValue);
@@ -71,8 +71,15 @@ export const initializeSliders = (sliders, filters) => {
 
 	const updateFilter = async (type, value, slider) => {
 		updateSliderLabel(slider, value);
-		filters[type] = `${value}%`;
-		const filterString = Object.entries(filters)
+
+		const filterStyles = filters
+			.filter((filter) => filter.type === 'slider')
+			.reduce((acc, filter) => {
+				acc[filter.name] = filter.name === type ? `${value}%` : acc[filter.name] || '100%';
+				return acc;
+			}, {});
+
+		const filterString = Object.entries(filterStyles)
 			.map(([key, val]) => `${key}(${val})`)
 			.join(' ');
 
