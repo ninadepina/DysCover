@@ -3,27 +3,38 @@ import { rgbToHex } from './utils/rgbToHex.js';
 
 export const initializeColorPicker = (colorPicker, colorPickerText) => {
 	const updateColorPicker = async () => {
-		await executeScriptOnActiveTab(() => {
-			const { color } = getComputedStyle(document.body);
-			chrome.runtime.sendMessage({ type: 'updateColorPicker', color });
-		});
+		try {
+			await executeScriptOnActiveTab(() => {
+				const { color } = getComputedStyle(document.body);
+				chrome.runtime.sendMessage({ type: 'updateColorPicker', color });
+			});
+		} catch (err) {
+			return;
+		}
 	};
-
 	chrome.runtime.onMessage.addListener(({ type, color }) => {
 		if (type === 'updateColorPicker') {
-			const hexColor = rgbToHex(color);
-			colorPicker.value = hexColor;
-			colorPickerText.textContent = hexColor;
+			try {
+				const hexColor = rgbToHex(color);
+				colorPicker.value = hexColor;
+				colorPickerText.textContent = hexColor;
+			} catch (err) {
+				return;
+			}
 		}
 	});
 
 	colorPickerText.textContent = colorPicker.value;
 	colorPicker.addEventListener('input', () => {
-		colorPickerText.textContent = colorPicker.value;
+		try {
+			colorPickerText.textContent = colorPicker.value;
 
-		executeScriptOnActiveTab((color) => {
-			document.body.style.color = color;
-		}, colorPicker.value);
+			executeScriptOnActiveTab((color) => {
+				document.body.style.color = color;
+			}, colorPicker.value);
+		} catch (err) {
+			return;
+		}
 	});
 
 	chrome.tabs.onActivated.addListener(updateColorPicker);
