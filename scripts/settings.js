@@ -74,12 +74,14 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 	const applySpecificSettings = () => {
 		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 			const activeTab = tabs[0];
-			const siteNameText = new URL(activeTab.url).hostname || activeTab.url;
+			const tabUrl = activeTab?.url;
 
-			if (/^chrome(|-extension):\/\//.test(activeTab.url)) {
+			if (!tabUrl || !/^https?:\/\/.+/.test(tabUrl)) {
 				resetToDefaultSettings();
 				return;
 			}
+
+			const siteNameText = new URL(tabUrl).hostname;
 
 			const specificSettings = JSON.parse(localStorage.getItem('specificSettings')) || [];
 
