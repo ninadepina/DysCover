@@ -31,7 +31,10 @@ export const initializeColorPicker = (colorPicker, colorPickerText) => {
 			colorPickerText.textContent = colorPicker.value;
 
 			executeScriptOnActiveTab((color) => {
-				document.body.style.color = color;
+				const textElements = document.querySelectorAll('*');
+				textElements.forEach((element) => {
+					element.style.color = color;
+				});
 			}, colorPicker.value);
 		} catch (err) {
 			return;
