@@ -12,6 +12,7 @@ export const initializeColorPicker = (colorPicker, colorPickerText) => {
 			return;
 		}
 	};
+
 	chrome.runtime.onMessage.addListener(({ type, color }) => {
 		if (type === 'updateColorPicker') {
 			try {

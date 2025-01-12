@@ -6,8 +6,8 @@ export const initializeTextToSpeech = (textToSpeechButton) => {
 		await executeScriptOnActiveTab(() => {
 			const selectedText = window.getSelection().toString();
 			// prettier-ignore
-			selectedText 
-				? speechSynthesis.speak(new SpeechSynthesisUtterance(selectedText)) 
+			selectedText
+				? speechSynthesis.speak(new SpeechSynthesisUtterance(selectedText))
 				: alert(alertMsg);
 		});
 	});
