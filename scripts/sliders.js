@@ -1,6 +1,8 @@
 import { applyFilters } from './utils/applyFilters.js';
 import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
 
+const DEFAULT_SLIDER_VALUE = 100;
+
 export const initializeSliders = (sliders, filters) => {
 	const activeFilters = {};
 
@@ -8,14 +10,28 @@ export const initializeSliders = (sliders, filters) => {
 		slider.nextElementSibling.querySelector('span').textContent = value;
 	};
 
+	const resetSliders = () => {
+		sliders.forEach(({ id, styleProp, unit, prefix = '', suffix = '', factor = 1, base = 0 }) => {
+			const slider = document.querySelector(id);
+			if (slider) {
+				slider.value = DEFAULT_SLIDER_VALUE;
+				updateSliderLabel(slider, DEFAULT_SLIDER_VALUE);
+				if (styleProp === 'fontSize') {
+					updateFontSize(slider); // reset font size
+				} else if (styleProp === 'lineHeight') {
+					updateLineHeight(slider); // reset line height
+				} else if (styleProp === 'filter') {
+					updateFilter(prefix.replace('(', ''), DEFAULT_SLIDER_VALUE, slider); // reset filter
+				} else {
+					updateStyle(slider, styleProp, unit, prefix, suffix, factor, base); // reset other styles
+				}
+			}
+		});
+	};
+
 	const updateStyle = async (slider, styleProp, unit, prefix = '', suffix = '', factor = 1, base = 0) => {
 		const value = styleProp === 'letterSpacing' ? ((slider.value - 100) * factor) / 100 + base : slider.value;
-		// prettier-ignore
-		const labelValue =
-			styleProp === 'letterSpacing'
-				? `${(value + 100).toFixed(0)}`
-				: value;
-
+		const labelValue = styleProp === 'letterSpacing' ? `${(value + 100).toFixed(0)}` : value;
 		updateSliderLabel(slider, labelValue);
 
 		await executeScriptOnActiveTab(
@@ -97,6 +113,9 @@ export const initializeSliders = (sliders, filters) => {
 
 		if (!slider) return;
 
+		slider.value = DEFAULT_SLIDER_VALUE;
+		updateSliderLabel(slider, DEFAULT_SLIDER_VALUE);
+
 		slider.addEventListener('input', () => {
 			switch (styleProp) {
 				case 'fontSize':
@@ -114,4 +133,7 @@ export const initializeSliders = (sliders, filters) => {
 			}
 		});
 	});
+
+	chrome.tabs.onActivated.addListener(resetSliders);
+	chrome.tabs.onUpdated.addListener(resetSliders);
 };

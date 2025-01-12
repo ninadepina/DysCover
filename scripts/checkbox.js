@@ -25,4 +25,21 @@ export const initializeCheckboxes = (invertCheckbox, monochromeCheckbox) => {
 
 	invertCheckbox.addEventListener('change', updateFilters);
 	monochromeCheckbox.addEventListener('change', updateFilters);
+
+	const resetCheckboxStates = () => {
+		invertCheckbox.checked = false;
+		monochromeCheckbox.checked = false;
+
+		applyFilters('');
+	};
+
+	chrome.tabs.onActivated.addListener(() => {
+		resetCheckboxStates();
+	});
+
+	chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+		if (changeInfo.status === 'complete') {
+			resetCheckboxStates();
+		}
+	});
 };
