@@ -5,7 +5,7 @@ export const initializeCheckboxes = (invertCheckbox, monochromeCheckbox) => {
 		const existingFilters = document.body.getAttribute('data-filter') || '';
 		const existingFiltersArray = existingFilters.split(' ').filter(Boolean);
 
-		const filters = [
+		const cssFilters = [
 			invertCheckbox.checked && 'invert(100%)',
 			monochromeCheckbox.checked && 'grayscale(100%)',
 		].filter(Boolean); // remove falsy values
@@ -17,7 +17,7 @@ export const initializeCheckboxes = (invertCheckbox, monochromeCheckbox) => {
 					(filter === 'grayscale(100%)' && !monochromeCheckbox.checked)
 				)
 			),
-			...filters.filter(filter => !existingFiltersArray.includes(filter))
+			...cssFilters.filter(filter => !existingFiltersArray.includes(filter))
 		].join(' ');
 
 		applyFilters(updatedFilters);
