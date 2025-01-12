@@ -127,12 +127,14 @@ export const initializeGlobalSettings = (sliders, inputs, globalUpdateButton, gl
 			} else if (inputElement.type === 'radio') {
 				const checkedRadio = document.querySelector(`[name="${name}"]:checked`);
 				value = checkedRadio ? checkedRadio.value : null;
+			} else if (inputElement.type === 'color') {
+				return null;
 			} else {
 				value = inputElement.value;
 			}
 
 			return { id: `[name="${name}"]`, value };
-		});
+		}).filter(item => item !== null);
 
 		return [...sliderValues, ...inputValues];
 	};
