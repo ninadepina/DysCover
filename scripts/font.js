@@ -1,24 +1,13 @@
 import { executeScriptOnActiveTab } from './utils/executeScriptOnActiveTab.js';
 
 export const initializeFont = (defaultFontLabel, defaultFontInput, fontButtons) => {
-	const updateFont = async () => {
-		try {
-			await executeScriptOnActiveTab(() => {
-				const { fontFamily, fontWeight } = getComputedStyle(document.body);
-				chrome.runtime.sendMessage({ type: 'updateFont', font: fontFamily, fontWeight });
-			});
-		} catch (err) {
-			return;
-		}
-	};
-
 	const handleFontChange = async (fontFamily) => {
 		try {
 			await executeScriptOnActiveTab((font) => {
 				document.body.style.fontFamily = font;
 			}, fontFamily);
 		} catch (err) {
-			return;
+			console.error('Failed to change font:', err);
 		}
 	};
 
@@ -35,8 +24,11 @@ export const initializeFont = (defaultFontLabel, defaultFontInput, fontButtons) 
 		});
 	});
 
-	chrome.tabs.onActivated.addListener(updateFont);
-	chrome.tabs.onUpdated.addListener(updateFont);
+	chrome.tabs.onActivated.addListener(() => {
+		defaultFontInput.checked = true;
+	});
 
-	updateFont();
+	chrome.tabs.onUpdated.addListener(() => {
+		defaultFontInput.checked = true;
+	});
 };
